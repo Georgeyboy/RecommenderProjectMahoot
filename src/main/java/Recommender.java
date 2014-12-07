@@ -19,44 +19,12 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 public class Recommender {
 
-//	private DataModel model;
-//	private ItemSimilarity itemSimilarity;
-//	private UserSimilarity userSimilarity;
-//	private UserNeighborhood neighborhood;
-//	private GenericUserBasedRecommender recommender;
-//	private GenericItemBasedRecommender itemRecommender;
-//	private CachingRecommender cachingRecommender;
-//	private HashMap<Integer, ArrayList<Integer>> input;
-
-	public void init(){
-		System.out.println("INITIALISING...");
-		try {
-
-//			System.out.println("Pre-Model");
-//			model = new FileDataModel(new File("C:\\Users\\George\\Uni\\COMP3208\\TrainingSetData\\subset-data-input.csv"));
-//			System.out.println("Model Done");
-//			//itemSimilarity = new PearsonCorrelationSimilarity(model);
-//			userSimilarity = new PearsonCorrelationSimilarity(model);
-//			System.out.println("User Sim Done");
-//			neighborhood = new NearestNUserNeighborhood(100000, userSimilarity, model);
-////			System.out.println("Neighborhood Done");
-//			recommender = new GenericUserBasedRecommender(model, neighborhood, userSimilarity);
-//			//itemRecommender = new GenericItemBasedRecommender(model, itemSimilarity);
-//			System.out.println("Recommender Done");
-//			cachingRecommender = new CachingRecommender(recommender);
-//			System.out.println("Caching Recommender Done");
-
-			input = new HashMap<>();
-			readInData();
-
-		} catch (Exception e) {
-			System.out.println("Exception!");
-			e.printStackTrace();
-		}
-		System.out.println("INITIALISED!");
-	}
 
 	public boolean itemBased(String inputData, String unrated, String rated){
+		System.out.println("Starting Item Based...");
+
+		Long time = System.currentTimeMillis();
+
 
 		try{
 			DataModel model = new FileDataModel(new File(inputData));
@@ -98,10 +66,17 @@ public class Recommender {
 			return false;
 		}
 
+		System.out.println("Item Based finished!");
+		System.out.println("That took " + (System.currentTimeMillis() - time) / 1000 + " seconds, or " + ((System.currentTimeMillis() - time) / 1000)/60.0 + " minutes!");
 		return true;
 	}
 
 	public boolean userBasedNeighborhood(String inputData, String unrated, String rated, int neighbourhood){
+
+		System.out.println("Starting User Based - Neighborhood...");
+
+		Long time = System.currentTimeMillis();
+
 
 		try{
 			DataModel model = new FileDataModel(new File(inputData));
@@ -143,11 +118,15 @@ public class Recommender {
 		}catch(Exception e){
 			return false;
 		}
-
+		System.out.println("User Based - Neightborhood finished!");
+		System.out.println("That took " + (System.currentTimeMillis() - time) / 1000 + " seconds, or " + ((System.currentTimeMillis() - time) / 1000)/60.0 + " minutes!");
 		return true;
 	}
 
 	public boolean userBasedThreshold(String inputData, String unrated, String rated, int threshold){
+		System.out.println("Starting User Based - Threshold...");
+
+		Long time = System.currentTimeMillis();
 
 		try{
 			DataModel model = new FileDataModel(new File(inputData));
@@ -190,13 +169,19 @@ public class Recommender {
 			return false;
 		}
 
+		System.out.println("User Based - Threshold finished!");
+		System.out.println("That took " + (System.currentTimeMillis() - time) / 1000 + " seconds, or " + ((System.currentTimeMillis() - time) / 1000)/60.0 + " minutes!");
 		return true;
 	}
 
 
-
+	/*
+	* Helper method
+	* No need to call directly
+	* @param file -  string reference to file location to read in
+	* @return HashMap of data read from file
+	* */
 	private HashMap readInData(String file){
-		System.out.println("Reading In Data...");
 
 		HashMap<Integer, ArrayList<Integer>> input = new HashMap<>();
 
@@ -250,7 +235,6 @@ public class Recommender {
 			}
 		}
 		return null;
-		System.out.println("Data Read In!");
 	}
 
 
@@ -258,7 +242,5 @@ public class Recommender {
 
 		Recommender rec = new Recommender();
 
-		rec.init();
-		rec.go();
 	}
 }
